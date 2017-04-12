@@ -1,6 +1,6 @@
 const should = require('chai').should()
 const expect = require('chai').expect
-const User = require('../src/user')
+const User = require('../models/user')
 
 describe('Deleting records', () => {
 	let abc;
