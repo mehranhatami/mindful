@@ -3,13 +3,14 @@ const Schema = mongoose.Schema
 const { ObjectId } = Schema.Types
 
 const UserSchema = new Schema({
-	username: String,
+	username: {
 		type: String,
     validate: {
-      validator: (name) => name.length > 3,
-      message: 'Name must be longer than 3 characters.'
+      validator: (username) => username.length > 2,
+      message: 'Name must be longer than 2 characters.'
     },
     required: [true, 'Name is required.']
+  },
 	firstName: String,
 	lastName: String,
 	email: String,

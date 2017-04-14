@@ -6,35 +6,35 @@ describe('Deleting records', () => {
 	let abc;
 
 	beforeEach((done) => {
-		abc = new User({name: 'ABC' })
+		abc = new User({username: 'ABC' })
 		abc.save()
 			.then(() => { done() })
 	})
 
 	it('model instance remove', (done) => {
 		abc.remove()
-			.then(() = User.findById(abc.id))
+			.then(() => User.findById(abc.id))
 			.then(user => {
 				expect(user).to.be.null
-				.done()
+				done()
 			})
 	})
 
 	it('class method remove', (done) => {
-		User.remove({ name: 'ABC' })
+		User.remove({ username: 'ABC' })
 			.then(() => User.findById(abc._id))
 			.then(user => {
 				expect(user).to.be.null
-				.done()
+				done()
 			})
 	})
 
-	it('class method findAndRemove', (done) => {
-		User.findAndRemove({ name: 'ABC' })
+	it('class method findOneAndRemove', (done) => {
+		User.findOneAndRemove({ username: 'ABC' })
 			.then(() => User.findById(abc._id))
 			.then(user => {
 				expect(user).to.be.null
-				.done()
+				done()
 			})
 	})
 
@@ -43,7 +43,7 @@ describe('Deleting records', () => {
 			.then(() => User.findById(abc._id))
 			.then(user => {
 				expect(user).to.be.null
-				.done()
+				done()
 			})
 	})
 

@@ -2,19 +2,18 @@ const should = require('chai').should()
 const expect = require('chai').expect
 const User = require('../models/user')
 const Reflection = require('../models/reflection')
-const Habit = require('../models/habit')
+
 
 describe('Associations', () => {
-	let abc, reflection, habit
+	let abc, reflection
 
 	beforeEach((done) => {
-		abc = new User({ name: 'ABC' })
-		reflection = new Reflection({ content: 'Today was a good day', habit: habit })
-		habit = new Habit({sleep: true,exercise: true, diet: true, meditation: true })
+		abc = new User({ username: 'ABC' })
+		reflection = new Reflection({ content: 'Today was a good day', habit: {sleep: true,exercise: true, diet: true, meditation: true } })
 
 		abc.reflections.push(reflection)
 
-		Promise.all([abc.save(), reflection.save(), habit.save()])
+		Promise.all([abc.save(), reflection.save()])
 			.then(() => done())
 	})
 
@@ -22,7 +21,7 @@ describe('Associations', () => {
 		abc.remove()
 			.then(() => Reflection.count())
 			.then((count) => {
-				count.shold.equal(0)
+				count.should.equal(0)
 				done()
 			})
 	})
