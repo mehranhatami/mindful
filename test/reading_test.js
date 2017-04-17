@@ -17,12 +17,20 @@ describe('Reading records', () => {
 			.then(() => done())
 	})
 
-	xit('finds all users by the name of `User1`', () => {
-
+	it('finds all users by the name of `User1`', (done) => {
+		User.find({ username: 'User1' })
+			.then((users) => {
+				users[0]._id.toString().should.equal(user_1._id.toString())
+				done()
+			})
 	})
 
-	xit('find user with a particular id', () => {
-
+	it('find user with a particular id', (done) => {
+		User.findById(user_1._id)
+			.then((user) => {
+				user.username.should.equal('User1')
+				done()
+			})
 	})
 
 	xit('finds all reflections of User1', () => {

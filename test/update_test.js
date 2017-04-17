@@ -1,8 +1,6 @@
 const should = require('chai').should()
 const expect = require('chai').expect
 const User = require('../models/user')
-const User = require('../models/user')
-
 
 describe('Updating records', () => {
 	let abc;
