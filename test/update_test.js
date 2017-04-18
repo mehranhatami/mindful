@@ -17,7 +17,7 @@ describe('Updating records', () => {
 			.then(users => {
 				users.length.should.equal(1)
 				users[0].username.should.equal('DEF')
-				dont()
+				done()
 			})
 	}
 

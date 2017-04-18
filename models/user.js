@@ -22,6 +22,11 @@ const UserSchema = new Schema({
 	}]
 })
 
+
+UserSchema.virtual('reflectionCount').get(function() {
+	return this.reflections.length;
+}) 
+
 UserSchema.pre('remove', function(next) {
 	const Reflection = mongoose.model('reflection')
 	Reflection.remove({ _id: { $in: this.reflections }})

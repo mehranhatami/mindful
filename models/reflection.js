@@ -8,16 +8,13 @@ const ReflectionSchema = new Schema({
 	contentSentiment: Number,
 	createdAt: Date,
 	updatedAt: Date,
-	habit: [HabitSchema],
-	user: {
-		type: ObjectId,
-		ref: 'user'
-	}
+	habit: [HabitSchema]
 })
 
 ReflectionSchema.virtual('reflectionScore').get(function() {
 	return this.contentSentiment * .75
 })
+
 
 const Reflection = mongoose.model('reflection', ReflectionSchema)
 
