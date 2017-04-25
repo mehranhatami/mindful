@@ -6,6 +6,7 @@ before((done) => {
   mongoose.connection
     .once('open', () => { done() })
     .on('error', (error) => {
+      /* eslint-disable no-console */
       console.warn('Warning', error)
     })
 })
@@ -23,7 +24,6 @@ beforeEach((done) => {
   }
 
   collectionKeys.forEach((collection) => {
-    mongoose.connection.db.dropCollection(collection, (err, result) => { check() })
+    mongoose.connection.db.dropCollection(collection, () => { check() })
   })
-
 })

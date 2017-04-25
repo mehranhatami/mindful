@@ -1,31 +1,31 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const app = require('../server.js').app;
-const User = require('../models/user')
-const Reflection = require('../models/reflection')
+const chai = require('chai')
+const chaiHttp = require('chai-http')
+const User = require('../server/models/user')
+const Reflection = require('../server/models/reflection')
 
-const should = chai.should();
+chai.should();
 chai.use(chaiHttp);
 
-describe('Creating records', function() {
+describe('Creating records', () => {
+  it('saves a user', (done) => {
+    const abc = new User({ username: 'ABC' })
 
-	it('saves a user', function() {
-		const abc = new User({ username: 'ABC' })
+    abc.save()
+      .then(() => {
+        abc.isNew.should.equal(false)
+        done()
+      })
+      .catch(err => done(err))
+  })
 
-		abc.save()
-			.then(() => {
-				abc.isNew.should.equal(false)
-				done()
-			})
-	})
+  it('saves a reflection', (done) => {
+    const reflection = new Reflection({})
 
-	it('saves a reflection', function() {
-		const reflection = new Reflection({})
-
-		reflection.save()
-			.then(() => {
-				reflection.isNew.should.equal(false)
-				done()
-			})
-	})
+    reflection.save()
+      .then(() => {
+        reflection.isNew.should.equal(false)
+        done()
+      })
+      .catch(err => done(err))
+  })
 })
