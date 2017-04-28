@@ -8,7 +8,7 @@ chai.should()
 chai.use(chaiHttp)
 
 describe('The users controller', () => {
-  it('handles a POST request to /api/users', (done) => {
+  xit('handles a POST request to /api/users', (done) => {
     User.count().then(count => {
       chai.request(app)
         .post('/api/users')
@@ -24,7 +24,7 @@ describe('The users controller', () => {
         })
     })
   })
-  it('handles a PUT request to /api/users/:id', (done) => {
+  xit('handles a PUT request to /api/users/:id', (done) => {
     User.create({ username: 'Test' }).then(user => {
       chai.request(app)
         .put(`/api/users/${user._id}`)
@@ -41,7 +41,7 @@ describe('The users controller', () => {
       })
     })
   })
-  it('handles a DELETE request to /api/user/:id', (done) => {
+  xit('handles a DELETE request to /api/user/:id', (done) => {
     User.create({ username: 'Test' }).then(user => {
       chai.request(app)
         .delete(`/api/users/${user._id}`)
@@ -57,7 +57,7 @@ describe('The users controller', () => {
       })
     })
   })
-  it('handles a GET request to /api/users', (done) => {
+  xit('handles a GET request to /api/users', (done) => {
     const testUser1 = new User({
       username: 'Test1',
       email: 'test1@test.com'

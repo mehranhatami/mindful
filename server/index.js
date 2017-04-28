@@ -4,14 +4,16 @@ const app = express()
 const bodyParser = require('body-parser')
 
 const userRouter = require('./routes/user')
+const reflectionRouter = require('./routes/reflection')
 
 app.use(express.static('public'))
 app.use(bodyParser.json())
 
-app.use('api/v1/users', userRouter)
+userRouter(app)
+reflectionRouter(app)
 
 app.listen(process.env.PORT || 8080, () => {
-  console.log(`listeninig on http://localhost:${process.env.PORT || 8080}`)
+  console.log(`listening on http://localhost:${process.env.PORT || 8080}`)
 })
 
-module.exports = {app}
+module.exports = app
