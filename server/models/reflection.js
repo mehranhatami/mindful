@@ -4,15 +4,15 @@ const { ObjectId } = Schema.Types
 const HabitSchema = require('./habit')
 
 const ReflectionSchema = new Schema({
-	content: String,
-	contentSentiment: Number,
-	createdAt: Date,
-	updatedAt: Date,
-	habit: [HabitSchema]
+  content: String,
+  contentSentiment: Number,
+  createdAt: Date,
+  updatedAt: Date,
+  habit: [HabitSchema]
 })
 
 ReflectionSchema.virtual('reflectionScore').get(function() {
-	return this.contentSentiment * .75
+  return this.contentSentiment * .75
 })
 
 
