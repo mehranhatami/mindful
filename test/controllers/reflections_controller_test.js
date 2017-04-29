@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return*/
+
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const expect = chai.expect
@@ -9,14 +11,35 @@ chai.use(chaiHttp)
 
 describe('The reflections controller', () => {
   let joe
+  let reflection
 
   beforeEach((done) => {
     joe = new User({ username: 'Joe' })
-    joe.save()
-      .then(() => {
-        done()
+    reflection = new Reflection({ content: 'today was a good day' })
+    Promise.all([joe.save(), reflection.save()])
+      .then(() => done())
+      .catch(error => done(error))
+  })
+
+  it('handles a GET request to /api/refelctions', (done) => {
+    chai.request(app)
+      .get('/api/reflections')
+      .end((err, res) => {
+        if (err) { return done(err) }
+        res.body.length.should.equal(1)
+        res.body[0].content.should.equal('today was a good day')
+        return done()
       })
-      .catch(err => done(err))
+  })
+  it('handles a GET request to /api/refelctions/:id', (done) => {
+    chai.request(app)
+      .get(`/api/reflections/${reflection._id}`)
+      .end((err, res) => {
+        if (err) { return done(err) }
+        res.body.content.should.equal('today was a good day')
+        res.body._id.should.equal(reflection._id.toString())
+        return done()
+      })
   })
 
   it('handles a POST request to /api/reflections', (done) => {
@@ -24,8 +47,7 @@ describe('The reflections controller', () => {
       chai.request(app)
         .post('/api/reflections')
         .send({ user: joe._id, content: 'today was a good day' })
-        .end((err, res) => {
-          console.log(res.body)
+        .end((err) => {
           if (err) { return done(err) }
           Reflection.count()
             .then(newCount => {
@@ -38,57 +60,33 @@ describe('The reflections controller', () => {
     .catch(error => done(error))
   })
 
-  xit('handles a PUT request to /api/:user/reflections/:id', (done) => {
-    Reflection.create({ content: 'Test' }).then(reflection => {
-      chai.request(app)
-        .put(`/api/:user/reflections/${reflection._id}`)
-        .send({ sleep: true })
-        .end((err, res) => {
-          if (err) { return done(err) }
-
-          Reflection.findById(reflection._id)
-            .then(updatedReflection => {
-              updatedReflection.sleep.should.equal(true)
-              done()
-            })
-            .catch(err => done(err))
-      })
-    })
-  })
-  xit('handles a DELETE request to /api/:user/reflections/:id', (done) => {
-    Reflection.create({ content: 'Test' }).then(user => {
-      chai.request(app)
-        .delete(`/api/:user/reflections/${user._id}`)
-        .end((err, res) => {
-          if (err) { return done(err) }
-
-          Reflection.findById(reflection._id)
-            .then(deletedReflection => {
-              expect(deletedReflection).to.be.null
-              done()
-            })
-            .catch(err => done(err))
-      })
-    })
-  })
-  xit('handles a GET request to /api/:user/reflections', (done) => {
-    const testReflection1 = new Reflection({
-      content: 'Test1',
-    })
-    const testReflection2 = new Reflection({
-      content: 'Test2',
-    })
-    Promise.all([testReflection1.save(), testReflection2.save()])
-      .then(reflections => {
-        chai.request(app)
-          .get('/api/:user/reflections?content=Test1')
-          .end((err, res) => {
-            if (err) { return done(err) }
-            res.body.length.should.equal(1)
-            res.body[0].obj.content.should.equal('Test1')
+  it('handles a PUT request to /api/reflections/:id', (done) => {
+    chai.request(app)
+      .put(`/api/reflections/${reflection._id}`)
+      .send({ habit: { sleep: true } })
+      .end((err) => {
+        if (err) { return done(err) }
+        Reflection.findById(reflection._id)
+          .then(updatedReflection => {
+            updatedReflection.habit.sleep.should.equal(true)
             done()
           })
+          .catch(error => done(error))
       })
-      .catch(err => done(err))
+  })
+
+  it('handles a DELETE request to /api/reflections/:id', (done) => {
+    chai.request(app)
+      .delete(`/api/reflections/${reflection._id}`)
+      .end((err) => {
+        if (err) { return done(err) }
+        Reflection.findById(reflection._id)
+          .then(deletedReflection => {
+            /* eslint-disable no-unused-expressions*/
+            expect(deletedReflection).to.be.null
+            done()
+          })
+          .catch(error => done(error))
+      })
   })
 })

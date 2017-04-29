@@ -18,7 +18,7 @@ const ReflectionSchema = new Schema({
   contentSentiment: Number,
   createdAt: Date,
   updatedAt: Date,
-  habit: [HabitSchema]
+  habit: HabitSchema
 })
 
 ReflectionSchema.virtual('reflectionScore').get(function virtual() {
