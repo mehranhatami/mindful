@@ -1,8 +1,7 @@
-/* eslint-disable consistent-returns*/
+/* eslint-disable consistent-return*/
 
 const chai = require('chai')
 const chaiHttp = require('chai-http')
-const mongoose = require('mongoose')
 const expect = chai.expect
 const app = require('../../server')
 const User = require('../../server/models/user')
@@ -48,11 +47,11 @@ describe('The users controller', () => {
       })
   })
 
-  xit('handles a POST request to /api/users', (done) => {
+  it('handles a POST request to /api/users', (done) => {
     User.count().then(count => {
       chai.request(app)
         .post('/api/users')
-        .send({ user: joe._id })
+        .send({ username: 'Joe' })
         .end((err) => {
           if (err) { return done(err) }
           User.count()

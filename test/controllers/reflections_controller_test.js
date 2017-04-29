@@ -1,4 +1,4 @@
-/* eslint-disable consistent-returns*/
+/* eslint-disable consistent-return*/
 
 const chai = require('chai')
 const chaiHttp = require('chai-http')
