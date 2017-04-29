@@ -1,20 +1,31 @@
 const express = require('express')
 const app = express()
-
+const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-
+const DATABASE_URL = process.env.DATABASE_URL
 const userRouter = require('./routes/user')
 const reflectionRouter = require('./routes/reflection')
 
-// app.use(express.static('public'))
-app.use(bodyParser.json())
+mongoose.Promise = global.Promise
 
-userRouter(app)
-reflectionRouter(app)
+function server() {
+  app.use(bodyParser.json())
 
-app.listen(process.env.PORT || 8080, () => {
-  /* eslint-disable no-console*/
-  console.log(`listening on http://localhost:${process.env.PORT || 8080}`)
-})
+  userRouter(app)
+  reflectionRouter(app)
+
+  app.listen(process.env.PORT || 8080, () => {
+    /* eslint-disable no-console*/
+    console.log(`listening on PORT:${process.env.PORT || 8080}`)
+  })
+}
+
+mongoose.connect(DATABASE_URL || 'mongodb://localhost/mindful')
+mongoose.connection
+  .once('open', () => { server() })
+  .on('error', (error) => {
+    /* eslint-disable no-console */
+    console.warn('Warning', error)
+  })
 
 module.exports = app
