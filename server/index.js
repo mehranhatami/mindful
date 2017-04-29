@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const userRouter = require('./routes/user')
 const reflectionRouter = require('./routes/reflection')
 
-app.use(express.static('public'))
+// app.use(express.static('public'))
 app.use(bodyParser.json())
 
 userRouter(app)
