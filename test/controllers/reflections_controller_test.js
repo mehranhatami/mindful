@@ -1,4 +1,4 @@
-/* eslint-disable consistent-return*/
+/* eslint-disable consistent-returns*/
 
 const chai = require('chai')
 const chaiHttp = require('chai-http')
@@ -31,6 +31,7 @@ describe('The reflections controller', () => {
         return done()
       })
   })
+
   it('handles a GET request to /api/refelctions/:id', (done) => {
     chai.request(app)
       .get(`/api/reflections/${reflection._id}`)

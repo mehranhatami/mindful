@@ -1,3 +1,5 @@
+/* eslint-disable consistent-returns*/
+
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const mongoose = require('mongoose')
@@ -8,75 +10,88 @@ chai.should()
 chai.use(chaiHttp)
 
 describe('The users controller', () => {
+  let joe
+  let bob
+
+  beforeEach((done) => {
+    joe = new User({
+      username: 'Joe',
+      email: 'Joe@test.com'
+    })
+    bob = new User({
+      username: 'Bob',
+      email: 'Bob@test.com'
+    })
+    Promise.all([joe.save(), bob.save()])
+      .then(() => done())
+      .catch(error => done(error))
+  })
+
+  it('handles a GET request to /api/users', (done) => {
+    chai.request(app)
+      .get('/api/users')
+      .end((err, res) => {
+        if (err) { return done(err) }
+        res.body.length.should.equal(2)
+        return done()
+      })
+  })
+
+  it('handles a GET request to /api/users/:id', (done) => {
+    chai.request(app)
+      .get(`/api/users/${joe._id}`)
+      .end((err, res) => {
+        if (err) { return done(err) }
+        res.body.email.should.equal('Joe@test.com')
+        res.body._id.should.equal(joe._id.toString())
+        return done()
+      })
+  })
+
   xit('handles a POST request to /api/users', (done) => {
     User.count().then(count => {
       chai.request(app)
         .post('/api/users')
-        .end((err, res) => {
+        .send({ user: joe._id })
+        .end((err) => {
           if (err) { return done(err) }
-
           User.count()
             .then(newCount => {
               newCount.should.equal(count + 1)
               done()
             })
-            .catch(err => done(err))
+            .catch(error => done(error))
         })
     })
+    .catch(error => done(error))
   })
-  xit('handles a PUT request to /api/users/:id', (done) => {
-    User.create({ username: 'Test' }).then(user => {
-      chai.request(app)
-        .put(`/api/users/${user._id}`)
-        .send({ email: 'test@test.com' })
-        .end((err, res) => {
-          if (err) { return done(err) }
-
-          User.findById(user._id)
-            .then(updatedUser => {
-              updatedUser.email.should.equal('test@test.com')
-              done()
-            })
-            .catch(err => done(err))
-      })
-    })
-  })
-  xit('handles a DELETE request to /api/user/:id', (done) => {
-    User.create({ username: 'Test' }).then(user => {
-      chai.request(app)
-        .delete(`/api/users/${user._id}`)
-        .end((err, res) => {
-          if (err) { return done(err) }
-
-          User.findById(user._id)
-            .then(deletedUser => {
-              expect(deletedUser).to.be.null
-              done()
-            })
-            .catch(err => done(err))
-      })
-    })
-  })
-  xit('handles a GET request to /api/users', (done) => {
-    const testUser1 = new User({
-      username: 'Test1',
-      email: 'test1@test.com'
-    })
-    const testUser2 = new User({
-      username: 'Test2',
-      email: 'test2@test.com'
-    })
-    Promise.all([testUser1.save(), testUser2.save()])
-      .then(users => {
-        chai.request(app)
-          .get('/api/users?username=Test1')
-          .end((err, res) => {
-            if (err) { return done(err) }
-            res.body.length.should.equal(1)
-            res.body[0].obj.email.should.equal('test1@test.com')
+  it('handles a PUT request to /api/users/:id', (done) => {
+    chai.request(app)
+      .put(`/api/users/${joe._id}`)
+      .send({ email: 'JoeNew@test.com' })
+      .end((err) => {
+        if (err) { return done(err) }
+        User.findById(joe._id)
+          .then(updatedUser => {
+            updatedUser.email.should.equal('JoeNew@test.com')
             done()
           })
+          .catch(error => done(error))
       })
-      .catch(err => done(err))
+  })
+  it('handles a DELETE request to /api/users/:id', (done) => {
+    chai.request(app)
+      .delete(`/api/users/${joe._id}`)
+      .end((err) => {
+        if (err) { return done(err) }
+
+        User.findById(joe._id)
+          .then(deletedUser => {
+            /* eslint-disable no-unused-expressions*/
+            expect(deletedUser).to.be.null
+            done()
+          })
+          .catch(error => done(error))
+      })
   })
 })
