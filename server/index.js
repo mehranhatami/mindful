@@ -20,12 +20,17 @@ function server() {
   })
 }
 
-mongoose.connect(DATABASE_URL || 'mongodb://localhost/mindful')
-mongoose.connection
-  .once('open', () => { server() })
-  .on('error', (error) => {
-    /* eslint-disable no-console */
-    console.warn('Warning', error)
-  })
+if (process.env.NODE_ENV !== 'test') {
+  mongoose.connect(DATABASE_URL || 'mongodb://localhost/mindful')
+  mongoose.connection
+    .once('open', () => { server() })
+    .on('error', (error) => {
+      /* eslint-disable no-console */
+      console.warn('Warning', error)
+    })
+} else {
+  server()
+}
+
 
 module.exports = app
