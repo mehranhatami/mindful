@@ -4,7 +4,7 @@
   "description": "",
   "main": "server/index.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha",
+    "test": "NODE_ENV=test mocha --recursive",
     "test-local": "NODE_ENV=test nodemon --exec 'mocha --recursive -R min'",
     "start": "node server/index.js",
     "dev": "nodemon"

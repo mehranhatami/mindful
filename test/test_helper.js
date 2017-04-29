@@ -1,8 +1,9 @@
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
+const DATABASE_URL_TEST = process.env.DATABASE_URL_TEST
 
 before((done) => {
-  mongoose.connect('mongodb://localhost/mindful_test')
+  mongoose.connect(DATABASE_URL_TEST || 'mongodb://localhost/mindful_test')
   mongoose.connection
     .once('open', () => { done() })
     .on('error', (error) => {
