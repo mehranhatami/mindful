@@ -10,6 +10,8 @@ mongoose.Promise = global.Promise
 
 function server() {
   app.use(bodyParser.json())
+  app.use(express.static('public'))
+
 
   userRouter(app)
   reflectionRouter(app)
