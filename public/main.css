@@ -1,5 +1,29 @@
+
+
+.jumbotron {
+  background: url('/images/balance-110850_1280.jpg') no-repeat;
+  background-size: 100%;
+  height: 600px;
+}
+
+.banner {
+  margin-top: 100px;
+}
+
+.icons img {
+  max-width: 100px;
+}
+
+.signup-page {
+  margin-top: 300px;
+}
+
 .form-signin {
   max-width: 300px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.hidden{
+  display: none;
 }

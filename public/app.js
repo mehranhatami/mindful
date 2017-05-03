@@ -7,6 +7,7 @@ function bindEvents() {
   $('.login-button').on('click', function(event) {
     event.preventDefault()
     state.isLandingPage = false;
+    $('.signup-page').removeClass('hidden')
     router(state)
   })
 
