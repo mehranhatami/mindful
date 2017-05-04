@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const DATABASE_URL = process.env.DATABASE_URL
 const userRouter = require('./routes/user')
+const authRouter = require('./routes/auth')
 const reflectionRouter = require('./routes/reflection')
 const cors = require('cors')
 
@@ -16,6 +17,7 @@ function server() {
 
 
   userRouter(app)
+  authRouter(app)
   reflectionRouter(app)
 
   app.listen(process.env.PORT || 8080, () => {
