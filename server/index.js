@@ -5,8 +5,10 @@ const bodyParser = require('body-parser')
 const DATABASE_URL = process.env.DATABASE_URL
 const userRouter = require('./routes/user')
 const reflectionRouter = require('./routes/reflection')
+const cors = require('cors')
 
 mongoose.Promise = global.Promise
+app.use(cors())
 
 function server() {
   app.use(bodyParser.json())
