@@ -24,9 +24,8 @@ function bindEvents() {
     formData.forEach(function(item) {
       payload[item.name] = item.value;
     })
-    axios.post('https://immense-fjord-97699.herokuapp.com/api/users', payload)
+    axios.post('/api/users', payload)
       .then(function(res) {
-        console.log(res.data);
       })
   })
 }

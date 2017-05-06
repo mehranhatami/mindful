@@ -29,18 +29,34 @@ describe('The auth controller', () => {
       .catch(error => done(error))
   })
 
-  xit('should authenticate a user', (done) => {
+  it('should authenticate a user', (done) => {
     chai.request(app)
       .post('/api/auth')
       .send({ username: 'Joe', password: 'password123' })
-      .end((err) => {
+      .end((err, res) => {
         if (err) { return done(err) }
-        User.count()
-          .then(newCount => {
-            newCount.should.equal(count + 1)
-            done()
-          })
-          .catch(error => done(error))
+        res.body.username.should.equal('Joe')
+        return done()
+      })
+  })
+
+  it('should not authenticate due to wrong password', (done) => {
+    chai.request(app)
+      .post('/api/auth')
+      .send({ username: 'Joe', password: 'wrong' })
+      .end((err, res) => {
+        res.status.should.equal(401)
+        return done()
+      })
+  })
+
+  it('should notify that user does not exist', (done) => {
+    chai.request(app)
+      .post('/api/auth')
+      .send({ username: 'John', password: 'testing' })
+      .end((err, res) => {
+        res.status.should.equal(403)
+        return done()
       })
   })
 })

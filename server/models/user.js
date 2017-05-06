@@ -5,6 +5,7 @@ const { ObjectId } = Schema.Types
 const UserSchema = new Schema({
   username: {
     type: String,
+    unique: true,
     validate: {
       validator: (username) => username.length > 2,
       message: 'Name must be longer than 2 characters.'
@@ -13,7 +14,7 @@ const UserSchema = new Schema({
   },
   firstName: String,
   lastName: String,
-  email: String,
+  email: { type: String, unique: true },
   password: String,
   mindfulnessScore: Number,
   reflections: [
@@ -23,6 +24,18 @@ const UserSchema = new Schema({
     }
   ]
 })
+
+UserSchema.methods.apiRepr = function () {
+  return {
+    username: this.username,
+    firstName: this.firstName,
+    lastName: this.lastName,
+    email: this.email,
+    mindfulnessScore: this.mindfulnessScore,
+    reflections: this.reflections,
+    id: this._id
+  }
+}
 
 UserSchema.virtual('reflectionCount').get(function virtual() {
   return this.reflections.length

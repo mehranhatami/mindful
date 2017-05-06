@@ -64,6 +64,10 @@ describe('The users controller', () => {
     })
     .catch(error => done(error))
   })
+
+  xit('Prevent duplicate username or email', (done) => {
+  })
+
   it('handles a PUT request to /api/users/:id', (done) => {
     chai.request(app)
       .put(`/api/users/${joe._id}`)
