@@ -7,7 +7,7 @@ describe('Associations', () => {
   let reflection
 
   beforeEach((done) => {
-    abc = new User({ username: 'ABC' })
+    abc = new User({ username: 'Dude', email: 'Dude@test.com' })
     reflection = new Reflection({
       content: 'Today was a good day',
       habit: {
@@ -26,7 +26,7 @@ describe('Associations', () => {
   })
 
   it('should save a relation between a user and a reflection', (done) => {
-    User.findOne({ username: 'ABC' })
+    User.findOne({ username: 'Dude' })
       .populate('reflections')
       .then((user) => {
         user.reflections[0].content.should.equal('Today was a good day')

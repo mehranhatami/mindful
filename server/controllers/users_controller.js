@@ -9,7 +9,9 @@ module.exports = {
   getOne(req, res, next) {
     const userId = req.params.id
     User.findById(userId)
-      .then(user => user.apiRepr())
+      .then(user => {
+        res.json(user.apiRepr())
+      })
       .catch(next)
   },
   create(req, res, next) {

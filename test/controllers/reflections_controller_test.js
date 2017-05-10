@@ -14,7 +14,7 @@ describe('The reflections controller', () => {
   let reflection
 
   beforeEach((done) => {
-    joe = new User({ username: 'Joe' })
+    joe = new User({ username: 'Joe', email: 'Joe@test.com' })
     reflection = new Reflection({ content: 'today was a good day' })
     Promise.all([joe.save(), reflection.save()])
       .then(() => done())
